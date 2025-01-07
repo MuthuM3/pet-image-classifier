@@ -4,6 +4,10 @@ from PIL import Image
 import numpy as np
 import os
 
+# Get the absolute path to the models directory
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODELS_DIR = os.path.join(ROOT_DIR, 'models')
+
 # Set page config
 st.set_page_config(
     page_title="Pet Classifier: Dogs vs Cats",
@@ -37,12 +41,17 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-def load_model(model_path='models/final_model.keras'):
+def load_model(model_name='final_model.keras'):
     """Load the trained model"""
+    model_path = os.path.join(MODELS_DIR, model_name)
     if not os.path.exists(model_path):
         st.error(f"Model file not found at {model_path}")
         return None
-    return tf.keras.models.load_model(model_path)
+    try:
+        return tf.keras.models.load_model(model_path)
+    except Exception as e:
+        st.error(f"Error loading model: {str(e)}")
+        return None
 
 def preprocess_image(image):
     """Preprocess the image for model prediction"""
@@ -105,7 +114,7 @@ def main():
         )
     
     # Load model
-    model = load_model(f"models/{model_version}")
+    model = load_model(model_version)
     
     if model is None:
         st.error("Please make sure the model file exists in the models directory.")
