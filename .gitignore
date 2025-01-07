@@ -21,12 +21,7 @@ var/
 .DS_Store
 data/uploads/*
 models/saved_models/*
-# Model files
-models/*.keras
-models/*.h5
-# Specific model files
-models/best_model.keras
-models/final_model.keras
+
 # Training data directories - exclude to keep repository size manageable
 data/train/*
 data/small_train/*
